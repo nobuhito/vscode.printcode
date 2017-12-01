@@ -4,7 +4,7 @@ VS Code に印刷機能を追加！
 
 [English README](https://github.com/nobuhito/vscode.printcode/blob/master/README.md)
 
-![image](https://github.com/nobuhito/vscode.printcode/blob/master/printcode.gif?raw=true))
+![image](https://raw.githubusercontent.com/nobuhito/vscode.printcode/master/printcode.gif?raw=true)
 
 ## Marketplace
 
