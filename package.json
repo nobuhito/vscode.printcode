@@ -1,0 +1,64 @@
+{
+    "name": "printcode",
+    "displayName": "PrintCode",
+    "description": "Added printing function to VS Code!!",
+    "version": "1.0.0",
+    "author": {
+        "name": "Nobuhito SATO",
+        "email": "nobuhito.sato@gmail.com",
+        "url": "https://bulkus.net/"
+    },
+    "publisher": "nobuhito",
+    "engines": {
+        "vscode": "^1.17.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "repository": {
+        "url": "https://github.com/nobuhito/vscode.printcode"
+    },
+    "activationEvents": [
+        "onCommand:extension.print"
+    ],
+    "license": "SEE LICENSE IN LICENSE",
+    "icon": "icon.png",
+    "main": "./src/extension",
+    "contributes": {
+        "configuration": [
+            {
+                "title": "PrintCode Configuration",
+                "properties": {
+                    "printcode.tabSize": {
+                        "type": "integer",
+                        "description": "The number of spaces a tab is equal to.",
+                        "default": 2
+                    },
+                    "printcode.fontSize": {
+                        "type": "integer",
+                        "description": "Controls the font size in pixels.",
+                        "default": 12
+                    }
+                }
+            }
+        ],
+        "commands": [
+            {
+                "command": "extension.print",
+                "title": "PrintCode"
+            }
+        ]
+    },
+    "scripts": {
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "node ./node_modules/vscode/bin/test"
+    },
+    "devDependencies": {
+        "typescript": "^2.5.2",
+        "vscode": "^1.1.5",
+        "mocha": "^3.5.0",
+        "eslint": "^4.6.1",
+        "@types/node": "^7.0.0",
+        "@types/mocha": "^2.2.42"
+    }
+}
