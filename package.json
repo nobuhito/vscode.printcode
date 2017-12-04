@@ -2,7 +2,7 @@
     "name": "printcode",
     "displayName": "PrintCode",
     "description": "Added printing function to VS Code!!",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "author": {
         "name": "Nobuhito SATO",
         "email": "nobuhito.sato@gmail.com",
