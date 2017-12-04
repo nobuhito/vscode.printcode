@@ -24,7 +24,7 @@ function activate(context) {
                 child_process.exec("open " + tempFile);
                 break;
             case "linux":
-                child_process.exec("xdg.open " + tempFile);
+                child_process.exec("xdg-open " + tempFile);
                 break;
             case "win32":
                 child_process.exec("start " + tempFile);
