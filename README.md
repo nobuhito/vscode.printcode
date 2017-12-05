@@ -2,7 +2,9 @@
 
 PrintCode added printing function to VS Code!!
 
-[日本語 README](https://github.com/nobuhito/vscode.printcode/blob/master/README.ja.md)
+[README for Japnese](https://github.com/nobuhito/vscode.printcode/blob/master/README.ja.md)
+
+[Blog for Japanese](https://about.gitlab.com/2017/12/04/illustrations-and-icons-on-gitlab-com/)
 
 ![image](https://raw.githubusercontent.com/nobuhito/vscode.printcode/master/printcode.gif?raw=true)
 
