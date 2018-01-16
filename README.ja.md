@@ -25,10 +25,11 @@ PrintCodeはVS Codeに表示しているコードをHTMLファイルとして一
 
 ## Configuration Options
 
-Key      | Default | Description
----------|--------:|-------------
-tabSize  |       2 | タブの表示スペースサイズ
-fontSize |      12 | 印刷時のフォントサイズ
+Key         | Default | Description
+------------|--------:|-------------
+tabSize     |       2 | タブの表示スペースサイズ
+fontSize    |      12 | 印刷時のフォントサイズ
+browserPath |    none | デフォルトブラウザ以外で開く場合のパス
 
 ## Notes
 
@@ -41,6 +42,4 @@ PrintCodeの利用にはインターネット環境が必要です。
 
 ## Release Notes
 
-### 1.0.0
-
-PrintCodeを初めてリリース
+See [Changelog](https://github.com/nobuhito/vscode.printcode/blob/master/CHANGELOG.md).

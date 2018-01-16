@@ -38,6 +38,10 @@
                         "type": "integer",
                         "description": "Controls the font size in pixels.",
                         "default": 12
+                    },
+                    "printcode.browserPath": {
+                        "type": "string",
+                        "description": "Path for opening in the specified WebBrowser."
                     }
                 }
             }

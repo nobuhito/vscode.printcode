@@ -18,19 +18,24 @@ function activate(context) {
 
         fs.writeFileSync(tempFile, html, "utf8");
 
-        let platform = process.platform;
-        switch (platform) {
-            case "darwin":
-                child_process.exec("open " + tempFile);
-                break;
-            case "linux":
-                child_process.exec("xdg-open " + tempFile);
-                break;
-            case "win32":
-                child_process.exec("start " + tempFile);
-                break;
-        }
 
+        let browserPath = vscode.workspace.getConfiguration("printcode").get("browserPath");
+        if (browserPath != "") {
+            child_process.exec("\"" + browserPath + "\" " + tempFile);
+        } else {
+            let platform = process.platform;
+            switch (platform) {
+                case "darwin":
+                    child_process.exec("open " + tempFile);
+                    break;
+                case "linux":
+                    child_process.exec("xdg-open " + tempFile);
+                    break;
+                case "win32":
+                    child_process.exec("start " + tempFile);
+                    break;
+            }
+        }
     });
 
     context.subscriptions.push(disposable);

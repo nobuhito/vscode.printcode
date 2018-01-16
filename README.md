@@ -25,10 +25,11 @@ PrintCode temporarily saves the code displayed in the VS Code as an HTML file an
 
 ## Configuration Options
 
-Key      | Default | Description
----------|--------:|-------------
-tabSize  |       2 | The number of spaces a tab is equal to
-fontSize |      12 | Controls the font size in pixels
+Key         | Default | Description
+------------|--------:|-------------
+tabSize     |       2 | The number of spaces a tab is equal to
+fontSize    |      12 | Controls the font size in pixels
+browserPath |    none | Open with your non-default browser
 
 ## Notes
 
@@ -41,6 +42,4 @@ The created HTML file gets [CodeMirror][] library from CDN. This is to avoid the
 
 ## Release Notes
 
-### 1.0.0
-
-Initial release of PrintCode.
+See [Changelog](https://github.com/nobuhito/vscode.printcode/blob/master/CHANGELOG.md).
