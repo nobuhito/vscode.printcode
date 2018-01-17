@@ -42,6 +42,11 @@
                     "printcode.browserPath": {
                         "type": "string",
                         "description": "Path for opening in the specified WebBrowser."
+                    },
+                    "printcode.webServerPort": {
+                        "type": "integer",
+                        "description": "Port number for local WebServer.",
+                        "default": 3000
                     }
                 }
             }
@@ -64,5 +69,8 @@
         "eslint": "^4.6.1",
         "@types/node": "^7.0.0",
         "@types/mocha": "^2.2.42"
+    },
+    "dependencies": {
+        "codemirror": "^5.33.0"
     }
 }

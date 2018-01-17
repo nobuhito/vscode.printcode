@@ -25,20 +25,18 @@ PrintCodeはVS Codeに表示しているコードをHTMLファイルとして一
 
 ## Configuration Options
 
-Key         | Default | Description
-------------|--------:|-------------
-tabSize     |       2 | タブの表示スペースサイズ
-fontSize    |      12 | 印刷時のフォントサイズ
-browserPath |    none | デフォルトブラウザ以外で開く場合のパス
+Key           | Default | Description
+--------------|--------:|-------------
+tabSize       |       2 | タブの表示スペースサイズ
+fontSize      |      12 | 印刷時のフォントサイズ
+browserPath   |    none | デフォルトブラウザ以外で開く場合のパス
+webServerPort |    3000 | ローカルWebServerのポートナンバー
 
 ## Notes
 
-PrintCodeの利用にはインターネット環境が必要です。
+ブラウザ上にはAdSenseが表示されますが、印刷物には表示されません。
 
-作成されたHTMLファイルはCDNから [CodeMirror][] ライブラリを取得します。 これはChromeがローカルファイルを読み込めない [制限][issue47416] を回避するためです。
-
-[CodeMirror]: http://codemirror.net/
-[issue47416]: https://bugs.chromium.org/p/chromium/issues/detail?id=47416
+AdSenseの表示が不要な方はGitHubよりクローンして自分で修正することも出来ます😁
 
 ## Release Notes
 

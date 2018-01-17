@@ -25,20 +25,18 @@ PrintCode temporarily saves the code displayed in the VS Code as an HTML file an
 
 ## Configuration Options
 
-Key         | Default | Description
-------------|--------:|-------------
-tabSize     |       2 | The number of spaces a tab is equal to
-fontSize    |      12 | Controls the font size in pixels
-browserPath |    none | Open with your non-default browser
+Key           | Default | Description
+--------------|--------:|-------------
+tabSize       |       2 | The number of spaces a tab is equal to
+fontSize      |      12 | Controls the font size in pixels
+browserPath   |    none | Open with your non-default browser
+webServerPort |    3000 | Port number for local WebServer.
 
 ## Notes
 
-The Internet environment is necessary for using PrintCode.
+Display AdSense on Browser. Advertisements are not displayed on the printed content.
 
-The created HTML file gets [CodeMirror][] library from CDN. This is to avoid the [limitation][issue47416] that Chrome can not read local files.
-
-[CodeMirror]: http://codemirror.net/
-[issue47416]: https://bugs.chromium.org/p/chromium/issues/detail?id=47416
+Those who do not need AdSense display can clone from GitHub and modify them yourself 😁
 
 ## Release Notes
 
