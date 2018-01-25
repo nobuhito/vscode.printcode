@@ -1,3 +1,10 @@
+![version](https://vsmarketplacebadge.apphb.com/version-short/nobuhito.printcode.svg)
+![installs](https://vsmarketplacebadge.apphb.com/installs-short/nobuhito.printcode.svg)
+![rating](https://vsmarketplacebadge.apphb.com/rating-short/nobuhito.printcode.svg)
+![trendDaily](https://vsmarketplacebadge.apphb.com/trending-daily/nobuhito.printcode.svg)
+![trendWeekly](https://vsmarketplacebadge.apphb.com/trending-weekly/nobuhito.printcode.svg)
+![trandMonthly](https://vsmarketplacebadge.apphb.com/trending-monthly/nobuhito.printcode.svg)
+
 # PrintCode - Extension of VS Code
 
 PrintCode added printing function to VS Code!!
