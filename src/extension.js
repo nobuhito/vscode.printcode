@@ -96,10 +96,10 @@ function buildHtml(text, language) {
     let multiplex = "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.31.0/addon/mode/multiplex.min.js";
     let htmlmixed = "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.31.0/mode/htmlmixed/htmlmixed.js";
 
-    let myConfig = vscode.workspace.getConfiguration("printcode");
+    let myConfig = vscode.workspace.getConfiguration("printcode", null);
     let tabSize = myConfig.get("tabSize");
     let fontSize = myConfig.get("fontSize");
-    let fontFamily = vscode.workspace.getConfiguration("editor").get("fontFamily");
+    let fontFamily = vscode.workspace.getConfiguration("editor", null).get("fontFamily");
 
     let html = `
 <!doctype html>
