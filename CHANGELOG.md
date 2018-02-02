@@ -7,7 +7,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Added support for browserPath in settings.
 - Fixed for external CDN dependency.
-- Added Google AdSense.
 - Added Google Analytics.
 
 ## 1.0.0
