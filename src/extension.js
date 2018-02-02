@@ -101,11 +101,6 @@ function buildHtml(text, language) {
     let fontSize = myConfig.get("fontSize");
     let fontFamily = vscode.workspace.getConfiguration("editor").get("fontFamily");
 
-    let content = JSON.stringify(codemirror.modeInfo
-        .filter((d) => {
-            return d.mode == mode;
-        }), null, "  ");
-
     let html = `
 <!doctype html>
     <head>
@@ -125,7 +120,6 @@ function buildHtml(text, language) {
             width: 210mm;
         }
         body { margin: 0; padding: 0; }
-        #ad, #content { display: none; }
         @page {
             size: A4;
             margin: 10mm;
@@ -133,10 +127,6 @@ function buildHtml(text, language) {
         @media screen {
             body {
                 background: #eee;
-            }
-            #ad, #content {
-                display: block;
-                padding: 1em;
             }
             .CodeMirror {
                 background: white;
@@ -158,21 +148,8 @@ function buildHtml(text, language) {
 </head>
 <body>
 
-    <div id="ad">
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <!-- vscode.printcode -->
-        <ins class="adsbygoogle"
-            style="display:inline-block;width:728px;height:90px"
-            data-ad-client="ca-pub-9262536077732967"
-            data-ad-slot="2774722832"></ins>
-        <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
-
     <div id="code"></div>
 
-    <pre id="content">ModeInfo:<code>${content}</code></pre>
     <script>
         var head = document.getElementsByTagName("head")[0];
 
@@ -207,8 +184,8 @@ function buildHtml(text, language) {
             });
 
             cm.on("changes", function() {
-                document.querySelector(".CodeMirror-scroll").style.height = cm.doc.height;
-                // window.print();
+                // document.querySelector(".CodeMirror-scroll").style.height = cm.doc.height;
+                window.print();
             });
 
             cm.doc.setValue("${body}");
