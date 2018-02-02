@@ -92,6 +92,10 @@ function buildHtml(text, language) {
     let javascript = "/_node_modules/codemirror/mode/javascript/javascript.js";
     let stylesheet = "/_node_modules/codemirror/mode/css/css.js";
 
+    // for htmlembedded
+    let multiplex = "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.31.0/addon/mode/multiplex.min.js";
+    let htmlmixed = "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.31.0/mode/htmlmixed/htmlmixed.js";
+
     let myConfig = vscode.workspace.getConfiguration("printcode");
     let tabSize = myConfig.get("tabSize");
     let fontSize = myConfig.get("fontSize");
@@ -111,16 +115,11 @@ function buildHtml(text, language) {
     <script src="${js}"></script>
     <link rel="stylesheet" href="${css}">
     <script src="${lang}"></script>
-
-    <script src="${xml}"></script> 
-    <script src="${javascript}"></script>
-    <script src="${stylesheet}"></script>
-
     <style>
          /* https://qiita.com/cognitom/items/d39d5f19054c8c8fd592 */
         .CodeMirror {
             height: auto;
-            font-size: ${fontSize}pt; 
+            font-size: ${fontSize}pt;
             font-family: ${fontFamily};
             line-height: 1.2;
             width: 210mm;
@@ -176,23 +175,45 @@ function buildHtml(text, language) {
     <pre id="content">ModeInfo:<code>${content}</code></pre>
 </body>
     <script>
-        var cm = CodeMirror(document.getElementById("code"), {
-            value: "",
-            lineNumbers: true,
-            lineWrapping: true,
-            tabSize: ${tabSize},
-            readOnly: true,
-            scrollbarStyle: null,
-            viewportMargin: Infinity,
-            mode: "${mode}"
-        });
+        var head = document.getElementsByTagName("head")[0];
 
-        cm.on("changes", function() {
-            document.querySelector(".CodeMirror-scroll").style.height = cm.doc.height;
-            window.print();
+        if (["htmlembedded", "htmlmixed"].indexOf("${mode}") > -1) {
+            var addScripts = ["${xml}", "${javascript}", "${stylesheet}"];
+            for (var script of addScripts) {
+                var source = document.createElement("script");
+                source.setAttribute("src", script);
+                head.appendChild(source);
+            }
+        }
+
+        if ("${mode}" == "htmlembedded") {
+            var addScripts = ["${multiplex}", "${htmlmixed}"];
+            for (var script of addScripts) {
+                var source = document.createElement("script");
+                source.setAttribute("src", script);
+                head.appendChild(source);
+            }
+        }
+
+        window.addEventListener("load", function(event) {
+            var cm = CodeMirror(document.getElementById("code"), {
+                value: "",
+                lineNumbers: true,
+                lineWrapping: true,
+                tabSize: ${tabSize},
+                readOnly: true,
+                scrollbarStyle: null,
+                viewportMargin: Infinity,
+                mode: "${mode}"
+            });
+
+            cm.on("changes", function() {
+                document.querySelector(".CodeMirror-scroll").style.height = cm.doc.height;
+                window.print();
+            });
+
+            cm.doc.setValue("${body}");
         });
-        
-        cm.doc.setValue("${body}");
     </script>
 </html>
 `;
