@@ -39,12 +39,6 @@ fontSize      |      12 | 印刷時のフォントサイズ
 browserPath   |    none | デフォルトブラウザ以外で開く場合のパス
 webServerPort |    3000 | ローカルWebServerのポートナンバー
 
-## Notes
-
-ブラウザ上にはAdSenseが表示されますが、印刷物には表示されません。
-
-AdSenseの表示が不要な方はGitHubよりクローンして自分で修正することも出来ます😁
-
 ## Release Notes
 
 See [Changelog](https://github.com/nobuhito/vscode.printcode/blob/master/CHANGELOG.md).

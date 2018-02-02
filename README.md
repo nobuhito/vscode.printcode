@@ -39,12 +39,6 @@ fontSize      |      12 | Controls the font size in pixels
 browserPath   |    none | Open with your non-default browser
 webServerPort |    3000 | Port number for local WebServer.
 
-## Notes
-
-Display AdSense on Browser. Advertisements are not displayed on the printed content.
-
-Those who do not need AdSense display can clone from GitHub and modify them yourself 😁
-
 ## Release Notes
 
 See [Changelog](https://github.com/nobuhito/vscode.printcode/blob/master/CHANGELOG.md).
