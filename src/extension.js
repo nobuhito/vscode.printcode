@@ -173,7 +173,6 @@ function buildHtml(text, language) {
     <div id="code"></div>
 
     <pre id="content">ModeInfo:<code>${content}</code></pre>
-</body>
     <script>
         var head = document.getElementsByTagName("head")[0];
 
@@ -215,6 +214,7 @@ function buildHtml(text, language) {
             cm.doc.setValue("${body}");
         });
     </script>
+</body>
 </html>
 `;
     return html.trim();
