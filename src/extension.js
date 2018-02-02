@@ -13,7 +13,7 @@ function activate(context) {
         let port = vscode.workspace.getConfiguration("printcode").get("webServerPort");
 
         if (server == null) {
-            let server = http.createServer(requestHandler);
+            server = http.createServer(requestHandler);
             server.listen(port, (err) => {
                 if (err) {
                     return console.log(err);
@@ -209,7 +209,7 @@ function buildHtml(text, language) {
 
             cm.on("changes", function() {
                 document.querySelector(".CodeMirror-scroll").style.height = cm.doc.height;
-                window.print();
+                // window.print();
             });
 
             cm.doc.setValue("${body}");
