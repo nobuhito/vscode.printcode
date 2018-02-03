@@ -7,7 +7,9 @@
 
 # PrintCode - Extension of VS Code
 
-PrintCode added printing function to VS Code!!
+You can print the code from VSCode!
+
+[Product page](https://printcode.launchaco.com/)
 
 [README for Japnese](https://github.com/nobuhito/vscode.printcode/blob/master/README.ja.md)
 
@@ -21,7 +23,7 @@ https://marketplace.visualstudio.com/items?itemName=nobuhito.printcode
 
 ## Features
 
-PrintCode temporarily saves the code displayed in the VS Code as an HTML file and displays it by the browser and prints it.
+PrintCode converts the code being edited into an HTML file, displays it by browser and prints it.
 
 ## Usage
 
