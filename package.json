@@ -2,7 +2,7 @@
     "name": "printcode",
     "displayName": "PrintCode",
     "description": "Added printing function to VS Code!!",
-    "version": "2.0.4",
+    "version": "2.0.5",
     "author": {
         "name": "Nobuhito SATO",
         "email": "nobuhito.sato@gmail.com",
@@ -47,6 +47,11 @@
                         "type": "integer",
                         "description": "Port number for local WebServer.",
                         "default": 3000
+                    },
+                    "printcode.disableTelemetry": {
+                        "type": "boolean",
+                        "description": "Dont't include Google Analytics code on page.",
+                        "default": false
                     }
                 }
             }

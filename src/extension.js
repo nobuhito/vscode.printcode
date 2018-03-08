@@ -100,6 +100,19 @@ function buildHtml(text, language) {
     let tabSize = myConfig.get("tabSize");
     let fontSize = myConfig.get("fontSize");
     let fontFamily = vscode.workspace.getConfiguration("editor", null).get("fontFamily");
+    let disableTelemetry = myConfig.get("disableTelemetry");
+
+    let googleAnalyticsSnipplet = disableTelemetry ? '' : `
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112594767-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-112594767-1');
+    </script>
+    `;
 
     let html = `
 <!doctype html>
@@ -135,16 +148,7 @@ function buildHtml(text, language) {
             }
         }
     </style>
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112594767-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'UA-112594767-1');
-    </script>
+    ${googleAnalyticsSnipplet}
 </head>
 <body>
 
