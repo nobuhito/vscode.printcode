@@ -23,7 +23,7 @@ function activate(context) {
 
         let editor = vscode.window.activeTextEditor;
         let language = editor.document.languageId;
-        var mode = resolveAliase(language);
+        var mode = resolveAliases(language);
         let url = "http://localhost:" + port + "/?mode=" + mode;
 
         let browserPath = vscode.workspace.getConfiguration("printcode").get("browserPath");
@@ -70,7 +70,7 @@ const requestHandler = (request, response) => {
     } else {
         response.end("");
     }
-}
+};
 
 function getHtml(editor) {
     let language = editor.document.languageId;
@@ -81,7 +81,7 @@ function getHtml(editor) {
 
 function buildHtml(text, language) {
     var body = text.EscapeForJSON();
-    var mode = resolveAliase(language);
+    var mode = resolveAliases(language);
 
     let css = "/_node_modules/codemirror/lib/codemirror.css";
     let js = "/_node_modules/codemirror/lib/codemirror.js";
@@ -101,6 +101,46 @@ function buildHtml(text, language) {
     let fontSize = myConfig.get("fontSize");
     let fontFamily = vscode.workspace.getConfiguration("editor", null).get("fontFamily");
     let disableTelemetry = myConfig.get("disableTelemetry");
+    let printFilePath = myConfig.get("printFilePath");
+    let printInfo = "vscode.printcode";
+
+    let folder = null;
+    let resource = vscode.window.activeTextEditor.document.uri;
+    let filePath = resource.fsPath || "";
+    let folderPath = "";
+
+    // better? https://github.com/cg-cnu/vscode-path-tools/blob/master/src/pathTools.ts
+    if (resource.scheme === 'file') {
+        // file is an actual file on disk
+        folder = vscode.workspace.getWorkspaceFolder(resource);
+        if (folder) {
+            // ...and is located inside workspace folder
+            folderPath = folder.uri.fsPath;
+        }
+    }
+
+    switch (printFilePath) {
+        case "none":
+            // show legacy document title
+            break;
+        case "full":
+            printInfo = filePath;
+            break;
+        case "relative":
+        case "pretty":
+            // partial path relative to workspace root
+            if (folder) {
+                printInfo = filePath.replace(folderPath, "").substr(1);
+            } else {
+            // or should we show full path if no relative path available?
+                printInfo = path.basename(filePath);
+            }
+            break;
+        default:
+            // default matches config default value "filename" and anything else
+            printInfo = path.basename(filePath);
+    }
+    // skip HTML encoding of '&' and '<' since they're quite rare in filenames
 
     let googleAnalyticsSnipplet = disableTelemetry ? '' : `
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -118,7 +158,7 @@ function buildHtml(text, language) {
 <!doctype html>
     <head>
     <meta charset="utf-8">
-    <title>vscode.printcode</title>
+    <title>${printInfo}</title>
 
     <script src="${js}"></script>
     <link rel="stylesheet" href="${css}">
@@ -201,7 +241,7 @@ function buildHtml(text, language) {
     return html.trim();
 }
 
-function resolveAliase(language) {
+function resolveAliases(language) {
     var table = {};
     var lines = codemirror.modeInfo;
     for (const line of lines) {

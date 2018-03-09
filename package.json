@@ -2,7 +2,7 @@
     "name": "printcode",
     "displayName": "PrintCode",
     "description": "Added printing function to VS Code!!",
-    "version": "2.0.5",
+    "version": "2.0.6",
     "author": {
         "name": "Nobuhito SATO",
         "email": "nobuhito.sato@gmail.com",
@@ -38,6 +38,12 @@
                         "type": "integer",
                         "description": "Controls the font size in pixels.",
                         "default": 12
+                    },
+                    "printcode.printFilePath": {
+                        "type": "string",
+                        "description": "Amount of file's path info in document title.",
+                        "default": "filename",
+                        "enum": ["none", "full", "relative", "filename"]
                     },
                     "printcode.browserPath": {
                         "type": "string",
