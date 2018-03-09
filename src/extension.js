@@ -87,6 +87,26 @@ function buildHtml(text, language) {
     let js = "/_node_modules/codemirror/lib/codemirror.js";
     let lang = "/_node_modules/codemirror/mode/" + mode + "/" + mode + ".js";
 
+    // these could be moved to package.json as configuration objects
+    let paperSpecs = {
+        a4: {
+            name: "A4",
+            width: "210mm",
+        },
+        a4Land: {
+            name: "A4 landscape",
+            width: "297mm"
+        },
+        letter: {
+            name: "letter",
+            width: "216mm",
+        },
+        letterLand: {
+            name: "letter landscape",
+            width: "279mm",
+        },
+    }
+
     // for htmlmixed
     let xml = "/_node_modules/codemirror/mode/xml/xml.js";
     let javascript = "/_node_modules/codemirror/mode/javascript/javascript.js";
@@ -102,7 +122,20 @@ function buildHtml(text, language) {
     let fontFamily = vscode.workspace.getConfiguration("editor", null).get("fontFamily");
     let disableTelemetry = myConfig.get("disableTelemetry");
     let printFilePath = myConfig.get("printFilePath");
+    let lineNumbers = myConfig.get("lineNumbers");
+    let autoPrint = myConfig.get("autoPrint");
     let printInfo = "vscode.printcode";
+
+    let paperSize = myConfig.get("paperSize");
+    paperSize = paperSpecs[paperSize] === undefined ? "a4" : paperSize;
+
+    let lineNumbering = "true";
+    if (lineNumbers === "off" || (
+        lineNumbers === "editor" &&
+        vscode.workspace.getConfiguration("editor", null).get("lineNumbers") === "off"
+        )) {
+            lineNumbering = "false";
+    }
 
     let folder = null;
     let resource = vscode.window.activeTextEditor.document.uri;
@@ -142,6 +175,8 @@ function buildHtml(text, language) {
     }
     // skip HTML encoding of '&' and '<' since they're quite rare in filenames
 
+    let printPopup = autoPrint ? `window.print();` : '';
+
     let googleAnalyticsSnipplet = disableTelemetry ? '' : `
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112594767-1"></script>
@@ -170,11 +205,11 @@ function buildHtml(text, language) {
             font-size: ${fontSize}pt;
             font-family: ${fontFamily};
             line-height: 1.2;
-            width: 210mm;
+            width: ${paperSpecs[paperSize].width};
         }
         body { margin: 0; padding: 0; }
         @page {
-            size: A4;
+            size: ${paperSpecs[paperSize].name};
             margin: 10mm;
         }
         @media screen {
@@ -218,7 +253,7 @@ function buildHtml(text, language) {
         window.addEventListener("load", function(event) {
             var cm = CodeMirror(document.getElementById("code"), {
                 value: "",
-                lineNumbers: true,
+                lineNumbers: ${lineNumbering},
                 lineWrapping: true,
                 tabSize: ${tabSize},
                 readOnly: true,
@@ -229,7 +264,7 @@ function buildHtml(text, language) {
 
             cm.on("changes", function() {
                 // document.querySelector(".CodeMirror-scroll").style.height = cm.doc.height;
-                window.print();
+                ${printPopup}
             });
 
             cm.doc.setValue("${body}");

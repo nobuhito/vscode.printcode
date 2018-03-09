@@ -2,7 +2,7 @@
     "name": "printcode",
     "displayName": "PrintCode",
     "description": "Added printing function to VS Code!!",
-    "version": "2.0.6",
+    "version": "2.0.7",
     "author": {
         "name": "Nobuhito SATO",
         "email": "nobuhito.sato@gmail.com",
@@ -39,6 +39,18 @@
                         "description": "Controls the font size in pixels.",
                         "default": 12
                     },
+                    "printcode.paperSize": {
+                        "type": "string",
+                        "description": "Paper size and orientation.",
+                        "enum": [ "a4", "a4Land", "letter", "letterLand" ],
+                        "default": "a4"
+                    },
+                    "printcode.lineNumbers": {
+                        "type": "string",
+                        "description": "Print line numbers.",
+                        "enum": [ "on", "off", "editor" ],
+                        "default": "on"
+                    },
                     "printcode.printFilePath": {
                         "type": "string",
                         "description": "Amount of file's path info in document title.",
@@ -58,6 +70,11 @@
                         "type": "boolean",
                         "description": "Dont't include Google Analytics code on page.",
                         "default": false
+                    },
+                    "printcode.autoPrint": {
+                        "type": "boolean",
+                        "description": "Pop up print dialog automatically.",
+                        "default": true
                     }
                 }
             }
