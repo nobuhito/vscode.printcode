@@ -12,11 +12,15 @@
   "engines": {
     "vscode": "^1.17.0"
   },
-  "categories": ["Other"],
+  "categories": [
+    "Other"
+  ],
   "repository": {
     "url": "https://github.com/nobuhito/vscode.printcode"
   },
-  "activationEvents": ["onCommand:extension.print"],
+  "activationEvents": [
+    "onCommand:extension.print"
+  ],
   "license": "SEE LICENSE IN LICENSE",
   "icon": "icon.png",
   "main": "./src/extension",
@@ -38,20 +42,34 @@
           "printcode.paperSize": {
             "type": "string",
             "description": "Paper size and orientation.",
-            "enum": ["a4", "a4Land", "letter", "letterLand"],
+            "enum": [
+              "a4",
+              "a4Land",
+              "letter",
+              "letterLand"
+            ],
             "default": "a4"
           },
           "printcode.lineNumbers": {
             "type": "string",
             "description": "Print line numbers.",
-            "enum": ["on", "off", "editor"],
+            "enum": [
+              "on",
+              "off",
+              "editor"
+            ],
             "default": "on"
           },
           "printcode.printFilePath": {
             "type": "string",
             "description": "Amount of file's path info in document title.",
             "default": "filename",
-            "enum": ["none", "full", "relative", "filename"]
+            "enum": [
+              "none",
+              "full",
+              "relative",
+              "filename"
+            ]
           },
           "printcode.browserPath": {
             "type": "string",
@@ -95,6 +113,6 @@
     "@types/mocha": "^2.2.42"
   },
   "dependencies": {
-    "codemirror": "^5.33.0"
+    "codemirror": "^5.35.0"
   }
 }
