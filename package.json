@@ -1,104 +1,100 @@
 {
-    "name": "printcode",
-    "displayName": "PrintCode",
-    "description": "Added printing function to VS Code!!",
-    "version": "2.0.7",
-    "author": {
-        "name": "Nobuhito SATO",
-        "email": "nobuhito.sato@gmail.com",
-        "url": "https://bulkus.net/"
-    },
-    "publisher": "nobuhito",
-    "engines": {
-        "vscode": "^1.17.0"
-    },
-    "categories": [
-        "Other"
+  "name": "printcode",
+  "displayName": "PrintCode",
+  "description": "Added printing function to VS Code!!",
+  "version": "2.0.7",
+  "author": {
+    "name": "Nobuhito SATO",
+    "email": "nobuhito.sato@gmail.com",
+    "url": "https://bulkus.net/"
+  },
+  "publisher": "nobuhito",
+  "engines": {
+    "vscode": "^1.17.0"
+  },
+  "categories": ["Other"],
+  "repository": {
+    "url": "https://github.com/nobuhito/vscode.printcode"
+  },
+  "activationEvents": ["onCommand:extension.print"],
+  "license": "SEE LICENSE IN LICENSE",
+  "icon": "icon.png",
+  "main": "./src/extension",
+  "contributes": {
+    "configuration": [
+      {
+        "title": "PrintCode Configuration",
+        "properties": {
+          "printcode.tabSize": {
+            "type": "integer",
+            "description": "The number of spaces a tab is equal to.",
+            "default": 2
+          },
+          "printcode.fontSize": {
+            "type": "integer",
+            "description": "Controls the font size in pixels.",
+            "default": 12
+          },
+          "printcode.paperSize": {
+            "type": "string",
+            "description": "Paper size and orientation.",
+            "enum": ["a4", "a4Land", "letter", "letterLand"],
+            "default": "a4"
+          },
+          "printcode.lineNumbers": {
+            "type": "string",
+            "description": "Print line numbers.",
+            "enum": ["on", "off", "editor"],
+            "default": "on"
+          },
+          "printcode.printFilePath": {
+            "type": "string",
+            "description": "Amount of file's path info in document title.",
+            "default": "filename",
+            "enum": ["none", "full", "relative", "filename"]
+          },
+          "printcode.browserPath": {
+            "type": "string",
+            "description": "Path for opening in the specified WebBrowser."
+          },
+          "printcode.webServerPort": {
+            "type": "integer",
+            "description": "Port number for local WebServer.",
+            "default": 4649
+          },
+          "printcode.disableTelemetry": {
+            "type": "boolean",
+            "description": "Dont't include Google Analytics code on page.",
+            "default": false
+          },
+          "printcode.autoPrint": {
+            "type": "boolean",
+            "description": "Pop up print dialog automatically.",
+            "default": true
+          }
+        }
+      }
     ],
-    "repository": {
-        "url": "https://github.com/nobuhito/vscode.printcode"
-    },
-    "activationEvents": [
-        "onCommand:extension.print"
-    ],
-    "license": "SEE LICENSE IN LICENSE",
-    "icon": "icon.png",
-    "main": "./src/extension",
-    "contributes": {
-        "configuration": [
-            {
-                "title": "PrintCode Configuration",
-                "properties": {
-                    "printcode.tabSize": {
-                        "type": "integer",
-                        "description": "The number of spaces a tab is equal to.",
-                        "default": 2
-                    },
-                    "printcode.fontSize": {
-                        "type": "integer",
-                        "description": "Controls the font size in pixels.",
-                        "default": 12
-                    },
-                    "printcode.paperSize": {
-                        "type": "string",
-                        "description": "Paper size and orientation.",
-                        "enum": [ "a4", "a4Land", "letter", "letterLand" ],
-                        "default": "a4"
-                    },
-                    "printcode.lineNumbers": {
-                        "type": "string",
-                        "description": "Print line numbers.",
-                        "enum": [ "on", "off", "editor" ],
-                        "default": "on"
-                    },
-                    "printcode.printFilePath": {
-                        "type": "string",
-                        "description": "Amount of file's path info in document title.",
-                        "default": "filename",
-                        "enum": ["none", "full", "relative", "filename"]
-                    },
-                    "printcode.browserPath": {
-                        "type": "string",
-                        "description": "Path for opening in the specified WebBrowser."
-                    },
-                    "printcode.webServerPort": {
-                        "type": "integer",
-                        "description": "Port number for local WebServer.",
-                        "default": 3000
-                    },
-                    "printcode.disableTelemetry": {
-                        "type": "boolean",
-                        "description": "Dont't include Google Analytics code on page.",
-                        "default": false
-                    },
-                    "printcode.autoPrint": {
-                        "type": "boolean",
-                        "description": "Pop up print dialog automatically.",
-                        "default": true
-                    }
-                }
-            }
-        ],
-        "commands": [
-            {
-                "command": "extension.print",
-                "title": "PrintCode"
-            }
-        ]
-    },
-    "scripts": {
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "node ./node_modules/vscode/bin/test"
-    },
-    "devDependencies": {
-        "typescript": "^2.5.2",
-        "vscode": "^1.1.5",
-        "mocha": "^3.5.0",
-        "eslint": "^4.6.1",
-        "@types/node": "^7.0.0",
-        "@types/mocha": "^2.2.42"
-    },
-    "dependencies": {
-        "codemirror": "^5.33.0"
-    }
+    "commands": [
+      {
+        "command": "extension.print",
+        "title": "PrintCode"
+      }
+    ]
+  },
+  "scripts": {
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "node ./node_modules/vscode/bin/test"
+  },
+  "devDependencies": {
+    "typescript": "^2.5.2",
+    "vscode": "^1.1.5",
+    "mocha": "^3.5.0",
+    "eslint": "^4.6.1",
+    "@types/node": "^7.0.0",
+    "@types/mocha": "^2.2.42"
+  },
+  "dependencies": {
+    "codemirror": "^5.33.0"
+  }
 }
