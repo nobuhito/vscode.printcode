@@ -7,6 +7,7 @@ const codemirror = require("codemirror/addon/runmode/runmode.node.js");
 require("codemirror/mode/meta.js");
 
 let server = null;
+let portNumberInUse = null;
 
 function activate(context) {
   let disposable = vscode.commands.registerCommand(
@@ -16,37 +17,63 @@ function activate(context) {
         .getConfiguration("printcode")
         .get("webServerPort");
 
+      if (server !== null && port !== portNumberInUse) {
+        server.close(function () { });
+        server = null;
+      }
+
       if (server == null) {
         server = http.createServer(requestHandler);
+        server.on('error', function (err) {
+            vscode.window.showInformationMessage(
+                `Unable to print: Port ${port} is in use. \
+                Please set different port number in User Settings: printcode.webServerPort \
+                or stop the active server which has reserved the port.`
+            );
+            server.close();
+            server = null;
+            return console.log(err);
+        });
+        server.on('request', (request, response) => {
+            response.on('finish', () => {
+                request.socket.destroy();
+            });
+        });
         server.listen(port, err => {
           if (err) {
             return console.log(err);
           }
+          portNumberInUse = port;
+          printIt();
         });
+      } else {
+        printIt();
       }
 
-      let editor = vscode.window.activeTextEditor;
-      let language = editor.document.languageId;
-      var mode = resolveAliases(language);
-      let url = "http://localhost:" + port + "/?mode=" + mode;
+      function printIt() {
+        let editor = vscode.window.activeTextEditor;
+        let language = editor.document.languageId;
+        var mode = resolveAliases(language);
+        let url = "http://localhost:" + port + "/?mode=" + mode;
 
-      let browserPath = vscode.workspace
-        .getConfiguration("printcode")
-        .get("browserPath");
-      if (browserPath != "") {
-        child_process.exec('"' + browserPath + '" ' + url);
-      } else {
-        let platform = process.platform;
-        switch (platform) {
-          case "darwin":
-            child_process.exec("open " + url);
-            break;
-          case "linux":
-            child_process.exec("xdg-open " + url);
-            break;
-          case "win32":
-            child_process.exec("start " + url);
-            break;
+        let browserPath = vscode.workspace
+          .getConfiguration("printcode")
+          .get("browserPath");
+        if (browserPath != "") {
+          child_process.exec('"' + browserPath + '" ' + url);
+        } else {
+          let platform = process.platform;
+          switch (platform) {
+            case "darwin":
+              child_process.exec("open " + url);
+              break;
+            case "linux":
+              child_process.exec("xdg-open " + url);
+              break;
+            case "win32":
+              child_process.exec("start " + url);
+              break;
+          }
         }
       }
     }
