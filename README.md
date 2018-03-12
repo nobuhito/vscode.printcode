@@ -11,7 +11,7 @@ You can print the code from VSCode!
 
 [Product page](https://printcode.launchaco.com/)
 
-[README for Japnese](https://github.com/nobuhito/vscode.printcode/blob/master/README.ja.md)
+[README for Japanese](https://github.com/nobuhito/vscode.printcode/blob/master/README.ja.md)
 
 [Blog for Japanese](https://about.gitlab.com/2017/12/04/illustrations-and-icons-on-gitlab-com/)
 
@@ -28,18 +28,23 @@ PrintCode converts the code being edited into an HTML file, displays it by brows
 ## Usage
 
 1. Press the `F1` key
-2. Select or Type `PrintCode`
+2. Select or type `PrintCode`
 3. The browser launches and displays the code
 4. A print dialog opens and you can print!!
 
 ## Configuration Options
 
-Key           | Default | Description
---------------|--------:|-------------
-tabSize       |       2 | The number of spaces a tab is equal to
-fontSize      |      12 | Controls the font size in pixels
-browserPath   |    none | Open with your non-default browser
-webServerPort |    3000 | Port number for local WebServer.
+Key              | Default  | Description
+-----------------|---------:|-------------
+tabSize          |        2 | The number of spaces a tab is equal to
+fontSize         |       12 | Controls the font size in pixels
+paperSize        |       a4 | Paper size and orientation
+lineNumbers      |       on | Print line numbers
+printFilePath    | filename | Amount of file's path info in document title
+browserPath      |     none | Open with your non-default browser
+webServerPort    |     3000 | Port number for local WebServer.
+disableTelemetry |    false | Dont't include Google Analytics code on page
+autoPrint        |     true | Pop up print dialog automatically
 
 ## Release Notes
 

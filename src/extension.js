@@ -23,7 +23,7 @@ function activate(context) {
 
         let editor = vscode.window.activeTextEditor;
         let language = editor.document.languageId;
-        var mode = resolveAliase(language);
+        var mode = resolveAliases(language);
         let url = "http://localhost:" + port + "/?mode=" + mode;
 
         let browserPath = vscode.workspace.getConfiguration("printcode").get("browserPath");
@@ -70,7 +70,7 @@ const requestHandler = (request, response) => {
     } else {
         response.end("");
     }
-}
+};
 
 function getHtml(editor) {
     let language = editor.document.languageId;
@@ -81,11 +81,31 @@ function getHtml(editor) {
 
 function buildHtml(text, language) {
     var body = text.EscapeForJSON();
-    var mode = resolveAliase(language);
+    var mode = resolveAliases(language);
 
     let css = "/_node_modules/codemirror/lib/codemirror.css";
     let js = "/_node_modules/codemirror/lib/codemirror.js";
     let lang = "/_node_modules/codemirror/mode/" + mode + "/" + mode + ".js";
+
+    // these could be moved to package.json as configuration objects
+    let paperSpecs = {
+        a4: {
+            name: "A4",
+            width: "210mm",
+        },
+        a4Land: {
+            name: "A4 landscape",
+            width: "297mm"
+        },
+        letter: {
+            name: "letter",
+            width: "216mm",
+        },
+        letterLand: {
+            name: "letter landscape",
+            width: "279mm",
+        },
+    }
 
     // for htmlmixed
     let xml = "/_node_modules/codemirror/mode/xml/xml.js";
@@ -100,12 +120,80 @@ function buildHtml(text, language) {
     let tabSize = myConfig.get("tabSize");
     let fontSize = myConfig.get("fontSize");
     let fontFamily = vscode.workspace.getConfiguration("editor", null).get("fontFamily");
+    let disableTelemetry = myConfig.get("disableTelemetry");
+    let printFilePath = myConfig.get("printFilePath");
+    let lineNumbers = myConfig.get("lineNumbers");
+    let autoPrint = myConfig.get("autoPrint");
+    let printInfo = "vscode.printcode";
+
+    let paperSize = myConfig.get("paperSize");
+    paperSize = paperSpecs[paperSize] === undefined ? "a4" : paperSize;
+
+    let lineNumbering = "true";
+    if (lineNumbers === "off" || (
+        lineNumbers === "editor" &&
+        vscode.workspace.getConfiguration("editor", null).get("lineNumbers") === "off"
+        )) {
+            lineNumbering = "false";
+    }
+
+    let folder = null;
+    let resource = vscode.window.activeTextEditor.document.uri;
+    let filePath = resource.fsPath || "";
+    let folderPath = "";
+
+    // better? https://github.com/cg-cnu/vscode-path-tools/blob/master/src/pathTools.ts
+    if (resource.scheme === 'file') {
+        // file is an actual file on disk
+        folder = vscode.workspace.getWorkspaceFolder(resource);
+        if (folder) {
+            // ...and is located inside workspace folder
+            folderPath = folder.uri.fsPath;
+        }
+    }
+
+    switch (printFilePath) {
+        case "none":
+            // show legacy document title
+            break;
+        case "full":
+            printInfo = filePath;
+            break;
+        case "relative":
+        case "pretty":
+            // partial path relative to workspace root
+            if (folder) {
+                printInfo = filePath.replace(folderPath, "").substr(1);
+            } else {
+            // or should we show full path if no relative path available?
+                printInfo = path.basename(filePath);
+            }
+            break;
+        default:
+            // default matches config default value "filename" and anything else
+            printInfo = path.basename(filePath);
+    }
+    // skip HTML encoding of '&' and '<' since they're quite rare in filenames
+
+    let printPopup = autoPrint ? `window.print();` : '';
+
+    let googleAnalyticsSnipplet = disableTelemetry ? '' : `
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112594767-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-112594767-1');
+    </script>
+    `;
 
     let html = `
 <!doctype html>
     <head>
     <meta charset="utf-8">
-    <title>vscode.printcode</title>
+    <title>${printInfo}</title>
 
     <script src="${js}"></script>
     <link rel="stylesheet" href="${css}">
@@ -117,11 +205,11 @@ function buildHtml(text, language) {
             font-size: ${fontSize}pt;
             font-family: ${fontFamily};
             line-height: 1.2;
-            width: 210mm;
+            width: ${paperSpecs[paperSize].width};
         }
         body { margin: 0; padding: 0; }
         @page {
-            size: A4;
+            size: ${paperSpecs[paperSize].name};
             margin: 10mm;
         }
         @media screen {
@@ -135,16 +223,7 @@ function buildHtml(text, language) {
             }
         }
     </style>
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112594767-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'UA-112594767-1');
-    </script>
+    ${googleAnalyticsSnipplet}
 </head>
 <body>
 
@@ -174,7 +253,7 @@ function buildHtml(text, language) {
         window.addEventListener("load", function(event) {
             var cm = CodeMirror(document.getElementById("code"), {
                 value: "",
-                lineNumbers: true,
+                lineNumbers: ${lineNumbering},
                 lineWrapping: true,
                 tabSize: ${tabSize},
                 readOnly: true,
@@ -185,7 +264,7 @@ function buildHtml(text, language) {
 
             cm.on("changes", function() {
                 // document.querySelector(".CodeMirror-scroll").style.height = cm.doc.height;
-                window.print();
+                ${printPopup}
             });
 
             cm.doc.setValue("${body}");
@@ -197,7 +276,7 @@ function buildHtml(text, language) {
     return html.trim();
 }
 
-function resolveAliase(language) {
+function resolveAliases(language) {
     var table = {};
     var lines = codemirror.modeInfo;
     for (const line of lines) {
