@@ -1,4 +1,4 @@
-const vscode = require('vscode');
+const vscode = require("vscode");
 const path = require("path");
 const fs = require("fs");
 const child_process = require("child_process");
@@ -9,175 +9,193 @@ require("codemirror/mode/meta.js");
 let server = null;
 
 function activate(context) {
-    let disposable = vscode.commands.registerCommand('extension.print', function () {
-        let port = vscode.workspace.getConfiguration("printcode").get("webServerPort");
+  let disposable = vscode.commands.registerCommand(
+    "extension.print",
+    function() {
+      let port = vscode.workspace
+        .getConfiguration("printcode")
+        .get("webServerPort");
 
-        if (server == null) {
-            server = http.createServer(requestHandler);
-            server.listen(port, (err) => {
-                if (err) {
-                    return console.log(err);
-                }
-            });
+      if (server == null) {
+        server = http.createServer(requestHandler);
+        server.listen(port, err => {
+          if (err) {
+            return console.log(err);
+          }
+        });
+      }
+
+      let editor = vscode.window.activeTextEditor;
+      let language = editor.document.languageId;
+      var mode = resolveAliases(language);
+      let url = "http://localhost:" + port + "/?mode=" + mode;
+
+      let browserPath = vscode.workspace
+        .getConfiguration("printcode")
+        .get("browserPath");
+      if (browserPath != "") {
+        child_process.exec('"' + browserPath + '" ' + url);
+      } else {
+        let platform = process.platform;
+        switch (platform) {
+          case "darwin":
+            child_process.exec("open " + url);
+            break;
+          case "linux":
+            child_process.exec("xdg-open " + url);
+            break;
+          case "win32":
+            child_process.exec("start " + url);
+            break;
         }
+      }
+    }
+  );
 
-        let editor = vscode.window.activeTextEditor;
-        let language = editor.document.languageId;
-        var mode = resolveAliases(language);
-        let url = "http://localhost:" + port + "/?mode=" + mode;
-
-        let browserPath = vscode.workspace.getConfiguration("printcode").get("browserPath");
-        if (browserPath != "") {
-            child_process.exec("\"" + browserPath + "\" " + url);
-        } else {
-            let platform = process.platform;
-            switch (platform) {
-                case "darwin":
-                    child_process.exec("open " + url);
-                    break;
-                case "linux":
-                    child_process.exec("xdg-open " + url);
-                    break;
-                case "win32":
-                    child_process.exec("start " + url);
-                    break;
-            }
-        }
-    });
-
-    context.subscriptions.push(disposable);
+  context.subscriptions.push(disposable);
 }
 exports.activate = activate;
 
-function deactivate() {
-}
+function deactivate() {}
 exports.deactivate = deactivate;
 
 const requestHandler = (request, response) => {
-    if (request.url.replace(/\?mode\=.*$/, "") == "/") {
-        let editor = vscode.window.activeTextEditor;
-        if (editor == undefined) { return; }
-        let html = getHtml(editor);
-        response.end(html);
-    } else if (/^\/_node_modules/.test(request.url)) {
-        let file = path.join(__dirname, "..", request.url.replace("/_node_modules", "node_modules"));
-        fs.readFile(file, "utf8", (err, text) => {
-            if (err) {
-                response.end(err.code + ": " + err.message);
-            }
-            response.end(text);
-        });
-    } else {
-        response.end("");
+  if (request.url.replace(/\?mode\=.*$/, "") == "/") {
+    let editor = vscode.window.activeTextEditor;
+    if (editor == undefined) {
+      return;
     }
+    let html = getHtml(editor);
+    response.end(html);
+  } else if (/^\/_node_modules/.test(request.url)) {
+    let file = path.join(
+      __dirname,
+      "..",
+      request.url.replace("/_node_modules", "node_modules")
+    );
+    fs.readFile(file, "utf8", (err, text) => {
+      if (err) {
+        response.end(err.code + ": " + err.message);
+      }
+      response.end(text);
+    });
+  } else {
+    response.end("");
+  }
 };
 
 function getHtml(editor) {
-    let language = editor.document.languageId;
-    let text = editor.document.getText();
-    let html = buildHtml(text, language);
-    return html;
+  let language = editor.document.languageId;
+  let text = editor.document.getText();
+  let html = buildHtml(text, language);
+  return html;
 }
 
 function buildHtml(text, language) {
-    var body = text.EscapeForJSON();
-    var mode = resolveAliases(language);
+  var body = text.EscapeForJSON();
+  var mode = resolveAliases(language);
 
-    let css = "/_node_modules/codemirror/lib/codemirror.css";
-    let js = "/_node_modules/codemirror/lib/codemirror.js";
-    let lang = "/_node_modules/codemirror/mode/" + mode + "/" + mode + ".js";
+  let css = "/_node_modules/codemirror/lib/codemirror.css";
+  let js = "/_node_modules/codemirror/lib/codemirror.js";
+  let lang = "/_node_modules/codemirror/mode/" + mode + "/" + mode + ".js";
 
-    // these could be moved to package.json as configuration objects
-    let paperSpecs = {
-        a4: {
-            name: "A4",
-            width: "210mm",
-        },
-        a4Land: {
-            name: "A4 landscape",
-            width: "297mm"
-        },
-        letter: {
-            name: "letter",
-            width: "216mm",
-        },
-        letterLand: {
-            name: "letter landscape",
-            width: "279mm",
-        },
+  // these could be moved to package.json as configuration objects
+  let paperSpecs = {
+    a4: {
+      name: "A4",
+      width: "210mm"
+    },
+    a4Land: {
+      name: "A4 landscape",
+      width: "297mm"
+    },
+    letter: {
+      name: "letter",
+      width: "216mm"
+    },
+    letterLand: {
+      name: "letter landscape",
+      width: "279mm"
     }
+  };
 
-    // for htmlmixed
-    let xml = "/_node_modules/codemirror/mode/xml/xml.js";
-    let javascript = "/_node_modules/codemirror/mode/javascript/javascript.js";
-    let stylesheet = "/_node_modules/codemirror/mode/css/css.js";
+  // for htmlmixed
+  let xml = "/_node_modules/codemirror/mode/xml/xml.js";
+  let javascript = "/_node_modules/codemirror/mode/javascript/javascript.js";
+  let stylesheet = "/_node_modules/codemirror/mode/css/css.js";
 
-    // for htmlembedded
-    let multiplex = "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.31.0/addon/mode/multiplex.min.js";
-    let htmlmixed = "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.31.0/mode/htmlmixed/htmlmixed.js";
+  // for htmlembedded
+  let multiplex = "/_node_modules/codemirror/addon/mode/multiplex.js";
+  let htmlmixed = "/_node_modules/codemirror/mode/htmlmixed/htmlmixed.js";
 
-    let myConfig = vscode.workspace.getConfiguration("printcode", null);
-    let tabSize = myConfig.get("tabSize");
-    let fontSize = myConfig.get("fontSize");
-    let fontFamily = vscode.workspace.getConfiguration("editor", null).get("fontFamily");
-    let disableTelemetry = myConfig.get("disableTelemetry");
-    let printFilePath = myConfig.get("printFilePath");
-    let lineNumbers = myConfig.get("lineNumbers");
-    let autoPrint = myConfig.get("autoPrint");
-    let printInfo = "vscode.printcode";
+  let myConfig = vscode.workspace.getConfiguration("printcode", null);
+  let tabSize = myConfig.get("tabSize");
+  let fontSize = myConfig.get("fontSize");
+  let fontFamily = vscode.workspace
+    .getConfiguration("editor", null)
+    .get("fontFamily");
+  let disableTelemetry = myConfig.get("disableTelemetry");
+  let printFilePath = myConfig.get("printFilePath");
+  let lineNumbers = myConfig.get("lineNumbers");
+  let autoPrint = myConfig.get("autoPrint");
+  let printInfo = "vscode.printcode";
 
-    let paperSize = myConfig.get("paperSize");
-    paperSize = paperSpecs[paperSize] === undefined ? "a4" : paperSize;
+  let paperSize = myConfig.get("paperSize");
+  paperSize = paperSpecs[paperSize] === undefined ? "a4" : paperSize;
 
-    let lineNumbering = "true";
-    if (lineNumbers === "off" || (
-        lineNumbers === "editor" &&
-        vscode.workspace.getConfiguration("editor", null).get("lineNumbers") === "off"
-        )) {
-            lineNumbering = "false";
+  let lineNumbering = "true";
+  if (
+    lineNumbers === "off" ||
+    (lineNumbers === "editor" &&
+      vscode.workspace.getConfiguration("editor", null).get("lineNumbers") ===
+        "off")
+  ) {
+    lineNumbering = "false";
+  }
+
+  let folder = null;
+  let resource = vscode.window.activeTextEditor.document.uri;
+  let filePath = resource.fsPath || "";
+  let folderPath = "";
+
+  // better? https://github.com/cg-cnu/vscode-path-tools/blob/master/src/pathTools.ts
+  if (resource.scheme === "file") {
+    // file is an actual file on disk
+    folder = vscode.workspace.getWorkspaceFolder(resource);
+    if (folder) {
+      // ...and is located inside workspace folder
+      folderPath = folder.uri.fsPath;
     }
+  }
 
-    let folder = null;
-    let resource = vscode.window.activeTextEditor.document.uri;
-    let filePath = resource.fsPath || "";
-    let folderPath = "";
+  switch (printFilePath) {
+    case "none":
+      // show legacy document title
+      break;
+    case "full":
+      printInfo = filePath;
+      break;
+    case "relative":
+    case "pretty":
+      // partial path relative to workspace root
+      if (folder) {
+        printInfo = filePath.replace(folderPath, "").substr(1);
+      } else {
+        // or should we show full path if no relative path available?
+        printInfo = path.basename(filePath);
+      }
+      break;
+    default:
+      // default matches config default value "filename" and anything else
+      printInfo = path.basename(filePath);
+  }
+  // skip HTML encoding of '&' and '<' since they're quite rare in filenames
 
-    // better? https://github.com/cg-cnu/vscode-path-tools/blob/master/src/pathTools.ts
-    if (resource.scheme === 'file') {
-        // file is an actual file on disk
-        folder = vscode.workspace.getWorkspaceFolder(resource);
-        if (folder) {
-            // ...and is located inside workspace folder
-            folderPath = folder.uri.fsPath;
-        }
-    }
+  let printPopup = autoPrint ? `window.print();` : "";
 
-    switch (printFilePath) {
-        case "none":
-            // show legacy document title
-            break;
-        case "full":
-            printInfo = filePath;
-            break;
-        case "relative":
-        case "pretty":
-            // partial path relative to workspace root
-            if (folder) {
-                printInfo = filePath.replace(folderPath, "").substr(1);
-            } else {
-            // or should we show full path if no relative path available?
-                printInfo = path.basename(filePath);
-            }
-            break;
-        default:
-            // default matches config default value "filename" and anything else
-            printInfo = path.basename(filePath);
-    }
-    // skip HTML encoding of '&' and '<' since they're quite rare in filenames
-
-    let printPopup = autoPrint ? `window.print();` : '';
-
-    let googleAnalyticsSnipplet = disableTelemetry ? '' : `
+  let googleAnalyticsSnipplet = disableTelemetry
+    ? ""
+    : `
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112594767-1"></script>
     <script>
@@ -189,7 +207,7 @@ function buildHtml(text, language) {
     </script>
     `;
 
-    let html = `
+  let html = `
 <!doctype html>
     <head>
     <meta charset="utf-8">
@@ -273,29 +291,29 @@ function buildHtml(text, language) {
 </body>
 </html>
 `;
-    return html.trim();
+  return html.trim();
 }
 
 function resolveAliases(language) {
-    var table = {};
-    var lines = codemirror.modeInfo;
-    for (const line of lines) {
-        var items = [];
-        items.push(line.name);
-        items.push(line.name.toLowerCase());
-        items.push(line.mode);
-        items = items.concat(line.ext);
-        items = items.concat(line.alias);
-        for (const item of items) {
-            table[item] = line.mode;
-        }
+  var table = {};
+  var lines = codemirror.modeInfo;
+  for (const line of lines) {
+    var items = [];
+    items.push(line.name);
+    items.push(line.name.toLowerCase());
+    items.push(line.mode);
+    items = items.concat(line.ext);
+    items = items.concat(line.alias);
+    for (const item of items) {
+      table[item] = line.mode;
     }
-    return table[language];
+  }
+  return table[language];
 }
 
 // https://qiita.com/qoAop/items/777c1e1e859097f7eb82#comment-22d9876ea23dfef952f9
-String.prototype.EscapeForJSON = function () {
-    return ("" + this).replace(/\W/g, function (c) {
-        return "\\u" + ("000" + c.charCodeAt(0).toString(16)).slice(-4);
-    });
+String.prototype.EscapeForJSON = function() {
+  return ("" + this).replace(/\W/g, function(c) {
+    return "\\u" + ("000" + c.charCodeAt(0).toString(16)).slice(-4);
+  });
 };
