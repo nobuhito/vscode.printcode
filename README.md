@@ -13,7 +13,7 @@ You can print the code from VSCode!
 
 [README for Japanese](https://github.com/nobuhito/vscode.printcode/blob/master/README.ja.md)
 
-[Blog for Japanese](https://about.gitlab.com/2017/12/04/illustrations-and-icons-on-gitlab-com/)
+[Blog for Japanese](https://blog.bulkus.net/tags/printcode/)
 
 ![image](https://raw.githubusercontent.com/nobuhito/vscode.printcode/master/printcode.gif?raw=true)
 
@@ -27,25 +27,29 @@ PrintCode converts the code being edited into an HTML file, displays it by brows
 
 ## Usage
 
-1. Press the `F1` key
-2. Select or type `PrintCode`
-3. The browser launches and displays the code
-4. A print dialog opens and you can print!!
+1.  Press the `F1` key
+2.  Select or type `PrintCode`
+3.  The browser launches and displays the code
+4.  A print dialog opens and you can print!!
 
 ## Configuration Options
 
-Key              | Default  | Description
------------------|---------:|-------------
-tabSize          |        2 | The number of spaces a tab is equal to
-fontSize         |       12 | Controls the font size in pixels
-paperSize        |       a4 | Paper size and orientation
-lineNumbers      |       on | Print line numbers
-printFilePath    | filename | Amount of file's path info in document title
-browserPath      |     none | Open with your non-default browser
-webServerPort    |     3000 | Port number for local WebServer.
-disableTelemetry |    false | Dont't include Google Analytics code on page
-autoPrint        |     true | Pop up print dialog automatically
+| Key              |  Default | Description                                  |
+| ---------------- | -------: | -------------------------------------------- |
+| tabSize          |        2 | The number of spaces a tab is equal to       |
+| fontSize         |       12 | Controls the font size in pixels             |
+| paperSize        |       a4 | Paper size and orientation                   |
+| lineNumbers      |       on | Print line numbers                           |
+| printFilePath    | filename | Amount of file's path info in document title |
+| browserPath      |     none | Open with your non-default browser           |
+| webServerPort    |     4649 | Port number for local WebServer.             |
+| disableTelemetry |    false | Dont't include Google Analytics code on page |
+| autoPrint        |     true | Pop up print dialog automatically            |
 
 ## Release Notes
 
 See [Changelog](https://github.com/nobuhito/vscode.printcode/blob/master/CHANGELOG.md).
+
+## Thank you
+
+@janilahti (#6)
