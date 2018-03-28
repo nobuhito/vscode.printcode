@@ -155,6 +155,9 @@ function buildHtml(text, language) {
   let multiplex = "/_node_modules/codemirror/addon/mode/multiplex.js";
   let htmlmixed = "/_node_modules/codemirror/mode/htmlmixed/htmlmixed.js";
 
+  // for php
+  let clike = "/_node_modules/codemirror/mode/clike/clike.js";
+
   let myConfig = vscode.workspace.getConfiguration("printcode", null);
   let tabSize = myConfig.get("tabSize");
   let fontSize = myConfig.get("fontSize");
@@ -276,23 +279,26 @@ function buildHtml(text, language) {
 
     <script>
         var head = document.getElementsByTagName("head")[0];
+        var addScripts = [];
 
         if (["htmlembedded", "htmlmixed"].indexOf("${mode}") > -1) {
-            var addScripts = ["${xml}", "${javascript}", "${stylesheet}"];
-            for (var script of addScripts) {
-                var source = document.createElement("script");
-                source.setAttribute("src", script);
-                head.appendChild(source);
-            }
+          addScripts.push("${xml}", "${javascript}", "${stylesheet}");
         }
 
         if ("${mode}" == "htmlembedded") {
-            var addScripts = ["${multiplex}", "${htmlmixed}"];
-            for (var script of addScripts) {
-                var source = document.createElement("script");
-                source.setAttribute("src", script);
-                head.appendChild(source);
-            }
+          addScripts.push("${multiplex}", "${htmlmixed}");
+        }
+
+        if ("${mode}" == "php") {
+          addScripts.push("${xml}", "${javascript}", "${stylesheet}", "${htmlmixed}", "${clike}");
+        }
+
+        if (addScripts.length > 0) {
+          for (var script of addScripts) {
+            var source = document.createElement("script");
+            source.setAttribute("src", script);
+            head.appendChild(source);
+          }
         }
 
         window.addEventListener("load", function(event) {
