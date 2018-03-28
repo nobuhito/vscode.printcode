@@ -43,10 +43,16 @@
                         "type": "string",
                         "description": "Paper size and orientation.",
                         "enum": [
+                            "a3",
+                            "a3Land",
                             "a4",
                             "a4Land",
+                            "a5",
+                            "a5Land",
                             "letter",
-                            "letterLand"
+                            "letterLand",
+                            "legal",
+                            "legalLand"
                         ],
                         "default": "a4"
                     },
