@@ -6,8 +6,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## 2.1.0
 
-* Added several options #6 (Thank you @jailahti)
-  * PaperSize, LineNumbers, PrintFilePath, DisableTelemetry, AutoPrint
+* Added several options #6 (Thank you @janilahti)
+  * paperSize, lineNumbers, printFilePath, disableTelemetry, autoPrint
 * Changed default port for web server to 4649
 * Updated Codemirror to v5.35
 * Fixed minor bugs and documents.

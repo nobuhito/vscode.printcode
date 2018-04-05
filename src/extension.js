@@ -101,6 +101,14 @@ function buildHtml(text, language) {
 
   // these could be moved to package.json as configuration objects
   let paperSpecs = {
+    a3: {
+      name: "A3",
+      width: "297mm"
+    },
+    a3Land: {
+      name: "A3 landscape",
+      width: "420mm"
+    },
     a4: {
       name: "A4",
       width: "210mm"
@@ -109,13 +117,29 @@ function buildHtml(text, language) {
       name: "A4 landscape",
       width: "297mm"
     },
+    a5: {
+      name: "A5",
+      width: "148mm"
+    },
+    a5Land: {
+      name: "A5 landscape",
+      width: "210mm"
+    },
     letter: {
       name: "letter",
       width: "216mm"
     },
     letterLand: {
       name: "letter landscape",
-      width: "279mm"
+      width: "280mm"
+    },
+    legal: {
+      name: "legal",
+      width: "216mm"
+    },
+    legalLand: {
+      name: "legal landscape",
+      width: "357mm"
     }
   };
 
@@ -127,6 +151,9 @@ function buildHtml(text, language) {
   // for htmlembedded
   let multiplex = "/_node_modules/codemirror/addon/mode/multiplex.js";
   let htmlmixed = "/_node_modules/codemirror/mode/htmlmixed/htmlmixed.js";
+
+  // for php
+  let clike = "/_node_modules/codemirror/mode/clike/clike.js";
 
   let myConfig = vscode.workspace.getConfiguration("printcode", null);
   let tabSize = myConfig.get("tabSize");
@@ -249,23 +276,26 @@ function buildHtml(text, language) {
 
     <script>
         var head = document.getElementsByTagName("head")[0];
+        var addScripts = [];
 
         if (["htmlembedded", "htmlmixed"].indexOf("${mode}") > -1) {
-            var addScripts = ["${xml}", "${javascript}", "${stylesheet}"];
-            for (var script of addScripts) {
-                var source = document.createElement("script");
-                source.setAttribute("src", script);
-                head.appendChild(source);
-            }
+          addScripts.push("${xml}", "${javascript}", "${stylesheet}");
         }
 
         if ("${mode}" == "htmlembedded") {
-            var addScripts = ["${multiplex}", "${htmlmixed}"];
-            for (var script of addScripts) {
-                var source = document.createElement("script");
-                source.setAttribute("src", script);
-                head.appendChild(source);
-            }
+          addScripts.push("${multiplex}", "${htmlmixed}");
+        }
+
+        if ("${mode}" == "php") {
+          addScripts.push("${xml}", "${javascript}", "${stylesheet}", "${htmlmixed}", "${clike}");
+        }
+
+        if (addScripts.length > 0) {
+          for (var script of addScripts) {
+            var source = document.createElement("script");
+            source.setAttribute("src", script);
+            head.appendChild(source);
+          }
         }
 
         window.addEventListener("load", function(event) {
