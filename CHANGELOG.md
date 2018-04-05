@@ -4,6 +4,11 @@ All notable changes to the "printcode" extension will be documented in this file
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## 2.2.0
+
+* Print PHP files correctly. #8 (Thank you @janilahti)
+* Add more paper sizes (a3, a5, legal). #9 (Thank you @janilahti)
+
 ## 2.1.0
 
 * Added several options #6 (Thank you @janilahti)
