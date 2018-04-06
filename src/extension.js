@@ -25,32 +25,44 @@ function activate(context) {
       if (server == null) {
         server = http.createServer(requestHandler);
         server.on('error', function (err) {
+          if (err.code === 'EADDRINUSE') {
             vscode.window.showInformationMessage(
-                `Unable to print: Port ${port} is in use. \
-                Please set different port number in User Settings: printcode.webServerPort \
-                or stop the active server which has reserved the port.`
+              `Unable to print: Port ${port} is in use. \
+Please set different port number in User Settings: printcode.webServerPort \
+and Reload Window, or end the process reserving the port.`
             );
-            server.close();
-            server = null;
-            return console.log(err);
+          } else if (err.code === 'EACCES') {
+            vscode.window.showInformationMessage(
+              `Unable to print: No permission to use port ${port}. \
+Please set different port number in User Settings: printcode.webServerPort \
+and Reload Window.`
+            );
+          }
+          server.close();
+          server = null;
+          portNumberInUse = null;
+          return console.log(err);
         });
         server.on('request', (request, response) => {
-            response.on('finish', () => {
-                request.socket.destroy();
-            });
+          response.on('finish', () => {
+            request.socket.destroy();
+          });
         });
-        server.listen(port, err => {
-          if (err) {
-            return console.log(err);
-          }
-          portNumberInUse = port;
+
+        server.listen(port, () => {});
+        portNumberInUse = port;
+        setTimeout(function() {
           printIt();
-        });
+        }, 100);
       } else {
         printIt();
       }
 
       function printIt() {
+        if (!server) {
+          return;
+        }
+
         let editor = vscode.window.activeTextEditor;
         let language = editor.document.languageId;
         var mode = resolveAliases(language);
