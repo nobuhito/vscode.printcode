@@ -7,6 +7,7 @@ const codemirror = require("codemirror/addon/runmode/runmode.node.js");
 require("codemirror/mode/meta.js");
 
 let server = null;
+let portNumberInUse = null;
 
 function activate(context) {
   let disposable = vscode.commands.registerCommand(
@@ -16,37 +17,75 @@ function activate(context) {
         .getConfiguration("printcode")
         .get("webServerPort");
 
-      if (server == null) {
-        server = http.createServer(requestHandler);
-        server.listen(port, err => {
-          if (err) {
-            return console.log(err);
-          }
-        });
+      if (server !== null && port !== portNumberInUse) {
+        server.close(function () { });
+        server = null;
       }
 
-      let editor = vscode.window.activeTextEditor;
-      let language = editor.document.languageId;
-      var mode = resolveAliases(language);
-      let url = "http://localhost:" + port + "/?mode=" + mode;
+      if (server == null) {
+        server = http.createServer(requestHandler);
+        server.on('error', function (err) {
+          if (err.code === 'EADDRINUSE') {
+            vscode.window.showInformationMessage(
+              `Unable to print: Port ${port} is in use. \
+Please set different port number in User Settings: printcode.webServerPort \
+and Reload Window, or end the process reserving the port.`
+            );
+          } else if (err.code === 'EACCES') {
+            vscode.window.showInformationMessage(
+              `Unable to print: No permission to use port ${port}. \
+Please set different port number in User Settings: printcode.webServerPort \
+and Reload Window.`
+            );
+          }
+          server.close();
+          server = null;
+          portNumberInUse = null;
+          return console.log(err);
+        });
+        server.on('request', (request, response) => {
+          response.on('finish', () => {
+            request.socket.destroy();
+          });
+        });
 
-      let browserPath = vscode.workspace
-        .getConfiguration("printcode")
-        .get("browserPath");
-      if (browserPath != "") {
-        child_process.exec('"' + browserPath + '" ' + url);
+        server.listen(port, () => {});
+        portNumberInUse = port;
+        setTimeout(function() {
+          printIt();
+        }, 100);
       } else {
-        let platform = process.platform;
-        switch (platform) {
-          case "darwin":
-            child_process.exec("open " + url);
-            break;
-          case "linux":
-            child_process.exec("xdg-open " + url);
-            break;
-          case "win32":
-            child_process.exec("start " + url);
-            break;
+        printIt();
+      }
+
+      function printIt() {
+        if (!server) {
+          return;
+        }
+
+        let editor = vscode.window.activeTextEditor;
+        let language = editor.document.languageId;
+        var mode = resolveAliases(language);
+        let url = "http://localhost:" + port + "/?mode=" + mode;
+
+        let browserPath = vscode.workspace
+          .getConfiguration("printcode")
+          .get("browserPath");
+        if (browserPath != "") {
+          child_process.exec('"' + browserPath + '" ' + url);
+        } else {
+          let platform = process.platform;
+          switch (platform) {
+            case "darwin":
+              child_process.exec("open " + url);
+              break;
+            case "linux":
+              child_process.exec("xdg-open " + url);
+              break;
+            case "win32":
+              child_process.exec("start " + url);
+              break;
+          }
         }
       }
     }
