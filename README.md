@@ -52,6 +52,6 @@ See [Changelog](https://github.com/nobuhito/vscode.printcode/blob/master/CHANGEL
 
 ## Thank you
 
-@janilahti (#6)
+@janilahti (#6, #7, #12)
 
 I like [osushi/お寿司](https://osushi.love/nobuhito) very much.
