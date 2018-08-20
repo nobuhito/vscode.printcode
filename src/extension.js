@@ -18,20 +18,20 @@ function activate(context) {
         .get("webServerPort");
 
       if (server !== null && port !== portNumberInUse) {
-        server.close(function () { });
+        server.close(function() {});
         server = null;
       }
 
       if (server == null) {
         server = http.createServer(requestHandler);
-        server.on('error', function (err) {
-          if (err.code === 'EADDRINUSE') {
+        server.on("error", function(err) {
+          if (err.code === "EADDRINUSE") {
             vscode.window.showInformationMessage(
               `Unable to print: Port ${port} is in use. \
 Please set different port number in User Settings: printcode.webServerPort \
 and Reload Window, or end the process reserving the port.`
             );
-          } else if (err.code === 'EACCES') {
+          } else if (err.code === "EACCES") {
             vscode.window.showInformationMessage(
               `Unable to print: No permission to use port ${port}. \
 Please set different port number in User Settings: printcode.webServerPort \
@@ -43,8 +43,8 @@ and Reload Window.`
           portNumberInUse = null;
           return console.log(err);
         });
-        server.on('request', (request, response) => {
-          response.on('finish', () => {
+        server.on("request", (request, response) => {
+          response.on("finish", () => {
             request.socket.destroy();
           });
         });
@@ -191,7 +191,7 @@ function buildHtml(text, language) {
   let multiplex = "/_node_modules/codemirror/addon/mode/multiplex.js";
   let htmlmixed = "/_node_modules/codemirror/mode/htmlmixed/htmlmixed.js";
 
-  // for php
+  // for clikes
   let clike = "/_node_modules/codemirror/mode/clike/clike.js";
 
   let myConfig = vscode.workspace.getConfiguration("printcode", null);
@@ -326,7 +326,12 @@ function buildHtml(text, language) {
         }
 
         if ("${mode}" == "php") {
-          addScripts.push("${xml}", "${javascript}", "${stylesheet}", "${htmlmixed}", "${clike}");
+          addScripts.push("${xml}", "${javascript}", "${stylesheet}", "${htmlmixed}");
+        }
+
+        var clikes = ["php", "dart"];
+        if (clikes.indexOf("${mode}") > -1) {
+          addScripts.push("${clike}");
         }
 
         if (addScripts.length > 0) {
