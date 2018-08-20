@@ -4,6 +4,11 @@ All notable changes to the "printcode" extension will be documented in this file
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## 2.3.1
+
+* Grouped CLike modes.
+* Updated modules.
+
 ## 2.3.0
 
 * Handle situations when webServerPort is not accessible #12 (Thank you @janilahti)
