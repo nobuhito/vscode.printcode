@@ -40,6 +40,9 @@ PrintCode converts the code being edited into an HTML file, displays it by brows
 | fontSize         |       12 | Controls the font size in pixels             |
 | paperSize        |       a4 | Paper size and orientation                   |
 | lineNumbers      |       on | Print line numbers                           |
+| useTrueLineNumbers |   true | When printing a region, don't start from 1   |
+| skipBeforeTag    | PRINTCODE_SKIPBEFORE | Don't print anything before this string |
+| skipAfterTag     | PRINTCODE_SKIPAFTER  | Don't print anything after this string  |
 | printFilePath    | filename | Amount of file's path info in document title |
 | browserPath      |     none | Open with your non-default browser           |
 | webServerPort    |     4649 | Port number for local WebServer.             |
