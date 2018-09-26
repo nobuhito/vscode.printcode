@@ -66,6 +66,21 @@
             ],
             "default": "on"
           },
+					"printcode.useTrueLineNumbers": {
+						"type": "boolean",
+						"description": "If printing partial file, don't start count from 1.",
+						"default": true
+					},
+					"printcode.skipBeforeTag": {
+						"type": "string",
+						"description": "Tag to separate non-printing part -- skip lines before this.",
+						"default": "PRINTCODE_SKIPBEFORE"
+					},
+					"printcode.skipAfterTag": {
+						"type": "string",
+						"description": "Tag to separate non-printing part -- skip lines after this.",
+						"default": "PRINTCODE_SKIPAFTER"
+					},
           "printcode.printFilePath": {
             "type": "string",
             "description": "Amount of file's path info in document title.",

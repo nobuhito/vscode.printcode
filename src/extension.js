@@ -8,6 +8,7 @@ require("codemirror/mode/meta.js");
 
 let server = null;
 let portNumberInUse = null;
+let firstLineNumber = 1;
 
 function activate(context) {
   let disposable = vscode.commands.registerCommand(
@@ -121,14 +122,39 @@ const requestHandler = (request, response) => {
   } else {
     response.end("");
   }
-};
+}; // PRINTCODE_SKIPBEFORE // example tag -- anything before that will not be printed
 
 function getHtml(editor) {
+  let myConfig = vscode.workspace.getConfiguration("printcode", null);
+  let useTrueLineNumbers = myConfig.get("useTrueLineNumbers");
+  let skipBeforeTag = myConfig.get("skipBeforeTag");
+  let skipAfterTag = myConfig.get("skipAfterTag");
+
   let language = editor.document.languageId;
   let text = editor.document.getText();
+
+  let skipBeforeMatch = new RegExp(skipBeforeTag);
+  if (text.match(skipBeforeMatch)) {
+    let actualLines = (text.match(/\r?\n/g) || '').length + 1;
+    let replaceBeforeMatch = new RegExp(`^[\\s\\S]+${skipBeforeTag}\\S*\\s*`, "m");
+    text = text.replace(replaceBeforeMatch, "");
+    let printingLines = (text.match(/\r?\n/g) || '').length + 1;
+    if (useTrueLineNumbers) {
+      firstLineNumber = actualLines - printingLines + 1;
+    } else {
+      firstLineNumber = 1;
+    }
+  }
+  let skipAfterMatch = new RegExp(skipAfterTag);
+  if (text.match(skipAfterMatch)) {
+    // matching several variations of comments from different languages
+    let replaceAfterMatch = new RegExp(`\\s*\\S*[/*#/'%!-]*\\s*${skipAfterTag}[\\s\\S]+`, "m");
+    text = text.replace(replaceAfterMatch, "");
+  }
+
   let html = buildHtml(text, language);
   return html;
-}
+} // PRINTCODE_SKIPAFTER example tag -- anything after that will not be printed
 
 function buildHtml(text, language) {
   var body = text.EscapeForJSON();
@@ -346,6 +372,7 @@ function buildHtml(text, language) {
             var cm = CodeMirror(document.getElementById("code"), {
                 value: "",
                 lineNumbers: ${lineNumbering},
+                firstLineNumber: ${firstLineNumber},
                 lineWrapping: true,
                 tabSize: ${tabSize},
                 readOnly: true,
