@@ -79,5 +79,7 @@ class Config {
     this.browserPath = myConfig.get("browserPath");
 
     this.webServerPort = myConfig.get("webServerPort");
+
+    this.additionalStyleSheet = myConfig.get("additionalStyleSheet");
   }
 }

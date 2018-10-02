@@ -78,6 +78,15 @@ exports.build = function(text, language) {
         gtag('config', 'UA-112594767-1');
     </script>
     `;
+
+  let additionalStyleSheet =
+    config.additionalStyleSheet == ""
+      ? ""
+      : `
+      <style>
+      ${config.additionalStyleSheet}
+      </style>`;
+
   let html = `
 <!doctype html>
     <head>
@@ -112,6 +121,7 @@ exports.build = function(text, language) {
             }
         }
     </style>
+    ${additionalStyleSheet}
     ${googleAnalyticsSnipplet}
 </head>
 <body>

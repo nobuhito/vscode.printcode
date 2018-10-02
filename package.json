@@ -95,6 +95,10 @@
             "type": "boolean",
             "description": "Pop up print dialog automatically.",
             "default": true
+          },
+          "printcode.additionalStyleSheet": {
+            "type": "string",
+            "description": "Insert additional StyleSheet."
           }
         }
       }
