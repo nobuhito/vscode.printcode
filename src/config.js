@@ -35,19 +35,19 @@ class Config {
       },
       letter: {
         name: "letter",
-        width: "216mm"
+        width: "215mm"
       },
       letterLand: {
         name: "letter landscape",
-        width: "280mm"
+        width: "279mm"
       },
       legal: {
         name: "legal",
-        width: "216mm"
+        width: "215mm"
       },
       legalLand: {
         name: "legal landscape",
-        width: "357mm"
+        width: "356mm"
       }
     };
 
