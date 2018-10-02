@@ -34,17 +34,18 @@ PrintCode converts the code being edited into an HTML file, displays it by brows
 
 ## Configuration Options
 
-| Key              |  Default | Description                                  |
-| ---------------- | -------: | -------------------------------------------- |
-| tabSize          |        2 | The number of spaces a tab is equal to       |
-| fontSize         |       12 | Controls the font size in pixels             |
-| paperSize        |       a4 | Paper size and orientation                   |
-| lineNumbers      |       on | Print line numbers                           |
-| printFilePath    | filename | Amount of file's path info in document title |
-| browserPath      |     none | Open with your non-default browser           |
-| webServerPort    |     4649 | Port number for local WebServer.             |
-| disableTelemetry |    false | Dont't include Google Analytics code on page |
-| autoPrint        |     true | Pop up print dialog automatically            |
+| Key                  |  Default | Description                                  |
+| -------------------- | -------: | -------------------------------------------- |
+| tabSize              |        2 | The number of spaces a tab is equal to       |
+| fontSize             |       12 | Controls the font size in pixels             |
+| paperSize            |       a4 | Paper size and orientation                   |
+| lineNumbers          |       on | Print line numbers                           |
+| printFilePath        | filename | Amount of file's path info in document title |
+| browserPath          |     none | Open with your non-default browser           |
+| webServerPort        |     4649 | Port number for local WebServer.             |
+| disableTelemetry     |    false | Dont't include Google Analytics code on page |
+| autoPrint            |     true | Pop up print dialog automatically            |
+| additionalStyleSheet |     none | Insert additional StyleSheet                 |
 
 ## Release Notes
 

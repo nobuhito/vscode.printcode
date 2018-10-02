@@ -34,17 +34,18 @@ PrintCode は編集中のコードを HTML ファイルに変換し、ブラウ�
 
 ## Configuration Options
 
-| Key              |  Default | Description                            |
-| ---------------- | -------: | -------------------------------------- |
-| tabSize          |        2 | タブの表示スペースサイズ               |
-| fontSize         |       12 | 印刷時のフォントサイズ                 |
-| paperSize        |       a4 | 用紙サイズと印刷方向                   |
-| lineNumbers      |       on | 行番号の印刷                           |
-| printFilePath    | filename | 印刷ドキュメントのタイトルを指定       |
-| browserPath      |     none | デフォルトブラウザ以外で開く場合のパス |
-| webServerPort    |     4649 | ローカル WebServer のポートナンバー    |
-| disableTelemetry |    false | Google Analytics コードを埋め込まない  |
-| autoPrint        |     true | 印刷ダイアログの自動表示               |
+| Key                  |  Default | Description                            |
+| -------------------- | -------: | -------------------------------------- |
+| tabSize              |        2 | タブの表示スペースサイズ               |
+| fontSize             |       12 | 印刷時のフォントサイズ                 |
+| paperSize            |       a4 | 用紙サイズと印刷方向                   |
+| lineNumbers          |       on | 行番号の印刷                           |
+| printFilePath        | filename | 印刷ドキュメントのタイトルを指定       |
+| browserPath          |     none | デフォルトブラウザ以外で開く場合のパス |
+| webServerPort        |     4649 | ローカル WebServer のポートナンバー    |
+| disableTelemetry     |    false | Google Analytics コードを埋め込まない  |
+| autoPrint            |     true | 印刷ダイアログの自動表示               |
+| additionalStyleSheet |     none | 追加するスタイルシート                 |
 
 ## Release Notes
 

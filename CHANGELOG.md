@@ -4,6 +4,12 @@ All notable changes to the "printcode" extension will be documented in this file
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## 3.0.0
+
+* Refactoring
+* Support for additional style sheet
+* Fix for size of letter and legal
+
 ## 2.3.1
 
 * Grouped CLike modes.
