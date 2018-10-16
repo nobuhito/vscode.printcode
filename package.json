@@ -108,7 +108,14 @@
         "command": "extension.print",
         "title": "PrintCode"
       }
-    ]
+    ],
+    "menus": {
+			"editor/context": [
+				{
+					"command": "extension.print"
+				}
+			]
+		}
   },
   "scripts": {
     "postinstall": "node ./node_modules/vscode/bin/install",
