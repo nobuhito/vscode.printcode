@@ -9,21 +9,26 @@ exports.build = function(text, language) {
 
   let mode = funcs.resolveAliases(language);
 
-  let css = "/_node_modules/codemirror/lib/codemirror.css";
-  let js = "/_node_modules/codemirror/lib/codemirror.js";
-  let lang = "/_node_modules/codemirror/mode/" + mode + "/" + mode + ".js";
+//let bae = "/_node_modules/codemirror/lib/"
+  let base = "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.41.0/"
+// let base = "../../codemirror/lib/"
+
+  let css = base + "codemirror.css";
+  let js = base + "codemirror.js";
+  let lang = base + "mode/" + mode + "/" + mode + ".js";
 
   // for htmlmixed
-  let xml = "/_node_modules/codemirror/mode/xml/xml.js";
-  let javascript = "/_node_modules/codemirror/mode/javascript/javascript.js";
-  let stylesheet = "/_node_modules/codemirror/mode/css/css.js";
+//   https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.41.0/mode/xml/xml.js
+  let xml = base + "mode/xml/xml.js";
+  let javascript = base + "mode/javascript/javascript.js";
+  let stylesheet = base + "mode/css/css.js";
 
   // for htmlembedded
-  let multiplex = "/_node_modules/codemirror/addon/mode/multiplex.js";
-  let htmlmixed = "/_node_modules/codemirror/mode/htmlmixed/htmlmixed.js";
+  let multiplex = base + "addon/mode/multiplex.js";
+  let htmlmixed = base + "mode/htmlmixed/htmlmixed.js";
 
   // for clikes
-  let clike = "/_node_modules/codemirror/mode/clike/clike.js";
+  let clike = base + "mode/clike/clike.js";
 
   let folder = null;
   let resource = vscode.window.activeTextEditor.document.uri;
