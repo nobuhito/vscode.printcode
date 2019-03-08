@@ -2,6 +2,11 @@ exports.resolveAliases = function(language) {
   const codemirror = require("codemirror/addon/runmode/runmode.node.js");
   require("codemirror/mode/meta.js");
 
+  //Resolve naming conflict between VSCode & CodeMirror for shell scripts
+  if (language == 'shellscript') {
+    language = 'shell';
+  }
+
   var table = {};
   var lines = codemirror.modeInfo;
   for (const line of lines) {
