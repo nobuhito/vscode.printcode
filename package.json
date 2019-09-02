@@ -88,7 +88,7 @@
           },
           "printcode.disableTelemetry": {
             "type": "boolean",
-            "description": "Dont't include Google Analytics code on page.",
+            "description": "Don't include Google Analytics code on page.",
             "default": false
           },
           "printcode.autoPrint": {
