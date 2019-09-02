@@ -43,7 +43,7 @@ PrintCode converts the code being edited into an HTML file, displays it by brows
 | printFilePath        | filename | Amount of file's path info in document title |
 | browserPath          |     none | Open with your non-default browser           |
 | webServerPort        |     4649 | Port number for local WebServer.             |
-| disableTelemetry     |    false | Dont't include Google Analytics code on page |
+| disableTelemetry     |    false | Don't include Google Analytics code on page |
 | autoPrint            |     true | Pop up print dialog automatically            |
 | additionalStyleSheet |     none | Insert additional StyleSheet                 |
 
