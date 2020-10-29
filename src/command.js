@@ -20,12 +20,14 @@ function printIt() {
     child_process.exec('"' + config.browserPath + '" ' + url);
   } else {
     let platform = process.platform;
+    console.log(platform, url);
     switch (platform) {
       case "darwin":
         child_process.exec("open " + url);
         break;
       case "linux":
-        child_process.exec("xdg-open " + url);
+        let WSL = child_process.exec("grep microsoft /proc/version", (error, stout, stderr) => error)
+        WSL ? child_process.exec("cmd.exe /C start " + url) : child_process.exec("xdg-open " + url)
         break;
       case "win32":
         child_process.exec("start " + url);
