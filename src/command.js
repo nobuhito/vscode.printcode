@@ -20,7 +20,6 @@ function printIt() {
     child_process.exec('"' + config.browserPath + '" ' + url);
   } else {
     let platform = process.platform;
-    console.log(platform, url);
     switch (platform) {
       case "darwin":
         child_process.exec("open " + url);
